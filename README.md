@@ -1,2 +1,2 @@
 # PABTraining
-Code from PABTrainind
+Code from PABTraining
