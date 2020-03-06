@@ -1,0 +1,195 @@
+
+.xrx-popup-action-bar {
+	position: absolute;
+	padding: 0px;
+	height: 78px;
+	box-shadow: 0px 10px 10px -5px rgba(29, 29, 29, .35);
+	z-index: 600;
+	width: 100%;
+}
+
+.code em {
+	font-size:18px;
+}
+
+
+.code strong, .code span{
+	font-size: 20px;
+}
+
+.code span {
+	font-size: 22px;
+	font-family: inherit;
+}
+
+pre {
+	font-size:20px;
+	white-space: pre-wrap;
+	line-height: 125%;
+}
+
+.xrx-action-bar-label-line-one{
+	position: absolute;
+	width: 100%;
+	top: 15%;
+	color: #fff;
+	text-align: center;
+	font-size: 28px;
+	font-weight: 300;
+	text-shadow: #1d1d1d 0px -1px 0px;
+}
+.xrx-action-bar-label-line-two{
+	position: absolute;
+	width: 100%;
+	top: 55%;
+	color: #fff;
+	text-align: center;
+	
+	font-weight: 300;
+	text-shadow: #1d1d1d 0px -1px 0px;
+}
+
+.xrx-action-bar-label {font-size: 28px;}		
+
+.xrx-action-bar-button-left-two {
+  position: absolute;
+  left: 80px;
+}
+.xrx-action-bar-button-right-two {
+  position: absolute;
+  right: 80px;
+}
+
+.section-label {
+	margin: 0px;
+	left: 10px;
+	width: 100%;
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.demoContentContainer,
+#demoContentContainer {
+	position: absolute;
+	top: 90px;
+	left: 10px;
+	height: 378px;
+	width: 780px;
+}
+
+#tableContainer {
+	position: absolute;
+	top: 90px;
+	left: 10px;
+	height: 378px;
+	width: 780px;
+}
+
+#loading{
+	top:-15px;
+}
+
+@media screen and (min-width: 801px),screen and (min-height: 481px) {
+
+.demoContentContainer,
+#demoContentContainer {
+	position: absolute;
+	top: 90px;
+	left: 20px;
+	height:480px;
+	width: 984px;
+}
+
+#tableContainer {
+	position: absolute;
+	top: 90px;
+	left: 40px;
+	height:480px;
+	width: 944px;
+}
+
+#loading{
+	top:-25px;
+}
+
+}
+
+/* For demo page layout */
+.row {
+	margin: 10px;
+}
+.row:after {
+	clear:both;
+}
+
+.demoLeftContainer {
+	position:relative;
+	width: 50%;
+	padding-top: 5px;
+	float: left;
+}
+		
+.demoRightContainer {
+	position:relative;
+	width: 50%;
+	padding-top: 10px;
+	float: left;
+}
+
+.checkbox {
+	width: 36px;
+	height: 36px;
+	vertical-align: middle;
+}
+
+/* For icons on the Toggle button in button-demo.html */
+.cap_on_48 { background: url("images/Cap_On_48.png") 0 0 no-repeat; }
+.cap_off_48 { background: url("images/Cap_Off_48.png") 0 0 no-repeat; }
+
+
+/* For icons used in the Segmented Controls */
+.ui-icon.filetype_pdf { background: url("images/filetype_pdf_48.png") 0 0 no-repeat; }
+.ui-icon.filetype_tiff { background: url("images/filetype_tif_48.png") 0 0 no-repeat; }
+.ui-icon.one_sided { background: url("images/2_sided_1_48.png") 0 0 no-repeat; }
+.ui-icon.two_sided { background: url("images/2_sided_2_48.png") 0 0 no-repeat; }
+.ui-icon.two_sided_rotate { background: url("images/2_sided_rotate_48.png") 0 0 no-repeat; }
+.ui-icon.orientation_portrait { background: url("images/orientation_portrait_48.png") 0 0 no-repeat; }
+.ui-icon.orientation_landscape{ background: url("images/orientation_landscape_48.png") 0 0 no-repeat; }
+.ui-icon.output_color_bw { background: url("images/output_color_bw_48.png") 0 0 no-repeat; }
+.ui-icon.output_color_color { background: url("images/output_color_color_48.png") 0 0 no-repeat; }
+.ui-icon.output_color_gray { background: url("images/output_color_gray_48.png") 0 0 no-repeat; }
+.ui-icon.output_color_auto { background: url("images/output_color_48.png") 0 0 no-repeat; }
+.ui-icon.finish_1staple_40 { background: url("images/finish_1staple_40.png") 0 0 no-repeat; } 
+
+/* Banner Demo */
+h4.section-label{
+font-size: 20px;
+}
+
+/* Spin Box Demo */
+h6 {margin: 3px; 0; font-size: 16px;}
+
+
+		
+/* Table Styles */
+th:nth-of-type(1),
+td:nth-of-type(1) {
+	padding-left: 16px;
+	width: 58px;
+}
+th:nth-of-type(2),
+td:nth-of-type(2) {
+	padding-left: 12px;
+	padding-right: 12px;
+}
+th:last-child,
+td:last-child {
+	padding-right: 16px;
+	text-align: right;
+}	
+
+
+
+.table .xrx-spinner .ui-spinner {float: right;}
+
+

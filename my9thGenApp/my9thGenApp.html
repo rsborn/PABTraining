@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Main myapp Page</title>
+	<meta http-equiv="Cache-control" content="no-cache" />
+	
+	<!-- Xerox Webservices Javascript Library -->
+	<script src="js/XeroxJavascriptLibrary/XRXWebservices.js" type="text/javascript"></script>
+	<script src="js/XeroxJavascriptLibrary/XRXXmlHandler.js" type="text/javascript"></script>
+	<script src="js/XeroxJavascriptLibrary/XRXSession.js" type="text/javascript"></script>
+	<script src="js/XeroxJavascriptLibrary/XRXScan.js" type="text/javascript"></script>
+	<script src="js/XeroxJavascriptLibrary/XRXScanV2.js" type="text/javascript"></script>
+	<script src="js/XeroxJavascriptLibrary/XRXTemplate.js" type="text/javascript"></script>
+	<script src="js/XeroxJavascriptLibrary/XRXJobManagement.js" type="text/javascript"></script>
+	<script src="js/XeroxJavascriptLibrary/XRXDeviceConfig.js" type="text/javascript"></script>
+	<script src="js/XeroxJavascriptLibrary/XRXUtilities.js" type="text/javascript"></script>
+	<script src="js/XeroxJavascriptLibrary/XRXPrint.js" type="text/javascript" ></script>
+
+	
+	<!-- Xerox Widgets -->
+	<link href="http://localhost/xrx_g9_widgets/XRXg9Widgets.min.css" type="text/css" rel="stylesheet" />
+	<script src="http://localhost/xrx_g9_widgets/XRXg9Widgets.min.js" type="text/javascript"></script>
+	
+	<!-- Application Specific Javascript Files -->
+	<script src="js/Helper.js" type="text/javascript"></script>
+	
+	<!-- Page Size Specific CSS File -->
+	<link href="css/common.css" type="text/css" rel="stylesheet" />
+
+	
+	<!-- Page Javascript -->
+	<script language="JavaScript" type="text/javascript">
+	
+/***********************************  Configuration Vars ***********************************************/
+			var TEMPLATE_NAME = "My_App_Template.xst";		// Name of Scan Template
+			var DOCUMENT_NAME = "My_App_Doc_";				// Name of Document
+			var SCAN_SERVER = "xx.xx.xx.xx";				// Scan Server IP Address
+			var SCAN_DESTINATION = "ftp";			// FTP Scan Folder Destination
+			var LOGIN_NAME = "ftpuser";					// FTP & Http Login Name
+			var LOGIN_PASSWORD = "Password123";					// FTP&Http Login Password
+			var HTTP_SCAN_PATH = "C:\\\\httpScans";			// HTTP Scan Folder Destination
+			var HTTP_SCRIPT_PATH = "/xerox.ashx";			// HTTP Script Path Location
+			var YOUR_EMAIL = "someone@somewhere.com";	// Your Email Address
+			var EULA_KEY = "my9thGenApp.UserAcceptedEULA";		// Unique Key for local storage (can be anything)
+			var PULL_PRINT_URL = "http://www.support.xerox.com/services/XTend_SS_062211.pdf"; //URL to Print ready media
+
+/****************************************  Globals  ****************************************************/
+			var templateChecksum = "";
+			
+/****************************************  Initialize  *************************************************/
+
+
+$(function() {
+	
+
+	$('body > :not(#loading-alert)').hide();
+	$("#loading-alert").xrxalert({ autoOpen: true, buttons: []});
+	$("#loading").xrxactivityindicator({widgetSize:"xrx-large"});
+	
+	templateChecksum = xrxGetLocalStorageData("templateChecksum", "");
+	xrxDeviceConfigGetDeviceInformation( "http://127.0.0.1", deviceInfoCallbackSuccess, callbackFailure );
+	//loadAllWidgets();
+});
+
+function loadAllWidgets()
+{
+	
+	$('#exit').xrxbutton({
+		icons: {
+			glyph: "glyphicon-exit"
+		},
+		text: false,
+		}).click(exit);
+
+	
+	$('#start').xrxbutton({
+		icons: {
+			glyph: "glyphicon-start"
+		},
+		text: true
+		}).click(scanClick);
+				
+
+		
+	$("#featureTable").xrxtable({
+        bordered: true,
+        striped: true
+    }); 
+	
+	
+	$('body > :not(#loading-alert)').show();
+	
+	<!-- Create Popover -->
+	$("#scanWorkflow-popover").xrxpopover({
+        targetControl: "#scanWorkflow",
+        basedOnTouch: true
+    });
+	<!-- Set Starting value -->
+    $("#scanWorkflowVal").html($("#scanWorkflowMenu").val());
+	<!-- Create Segmented Control -->
+    $("#scanWorkflowMenu").xrxsegmentedcontrol({
+        type: "textandglyph",
+        widgetSize: "xrx-small",
+        select: function (event, data) {
+			<!-- Whenever value changes update -->
+            $("#scanWorkflowVal").html($("#scanWorkflowMenu").val());
+        }
+    });
+	
+	$("#scanDestination-popover").xrxpopover({
+        targetControl: "#scanDestination",
+        basedOnTouch: true
+    });
+    $("#scanDestinationVal").html($("#scanDestinationMenu").val());
+    $("#scanDestinationMenu").xrxsegmentedcontrol({
+        type: "textandglyph",
+        widgetSize: "xrx-small",
+        select: function (event, data) {
+            $("#scanDestinationVal").html($("#scanDestinationMenu").val());
+        }
+    });
+
+    $("#documentType-popover").xrxpopover({
+        targetControl: "#documentType",
+        basedOnTouch: true
+    });
+    $("#documentTypeVal").html($("#documentTypeMenu").val() == "TIFF_V6" ? "TIFF" : "PDF");
+    $("#documentTypeMenu").xrxsegmentedcontrol({
+        type: "textandicon",
+        widgetSize: "xrx-small",
+        select: function (event, data) {
+            $("#documentTypeVal").html($("#documentTypeMenu").val() == "TIFF_V6" ? "TIFF" : "PDF");
+        }
+    });
+
+    $("#originalOrientation-popover").xrxpopover({
+        targetControl: "#originalOrientation",
+        basedOnTouch: true
+    });
+    $("#originalOrientationVal").html($("#originalOrientationMenu").val());
+    $("#originalOrientationMenu").xrxsegmentedcontrol({
+        type: "textandicon",
+        widgetSize: "xrx-small",
+        select: function (event, data) {
+            $("#originalOrientationVal").html($("#originalOrientationMenu").val());
+        }
+    });
+
+    $("#twoSidedScanning-popover").xrxpopover({
+        targetControl: "#twoSidedScanning",
+        basedOnTouch: true
+    });
+    $("#twoSidedScanningVal").html($("#twoSidedScanningMenu").val());
+    $("#twoSidedScanningMenu").xrxsegmentedcontrol({
+        type: "textandicon",
+        widgetSize: "xrx-small",
+        select: function (event, data) {
+            $("#twoSidedScanningVal").html($("#twoSidedScanningMenu").val());
+        }
+    });
+
+    $("#outputColor-popover").xrxpopover({
+        targetControl: "#outputColor",
+        basedOnTouch: true
+    });
+    $("#outputColorVal").html($("#outputColorMenu").val());
+    $("#outputColorMenu").xrxsegmentedcontrol({
+        type: "textandicon",
+        widgetSize: "xrx-small",
+        select: function (event, data) {
+            $("#outputColorVal").html($("#outputColorMenu").val());
+        }
+    });	
+		
+	$("#printScan").xrxtoggleswitch({
+		widgetSize: "xrx-small",
+		light: true
+	});
+
+	$("#message-popup").xrxpopup();
+		
+    $("#demoContentContainer").xrxscrollable();
+	
+	$( "body" ).find("*").theme( "turquoise" );
+		
+	$("#eula-alert").xrxalert({
+		buttons: [{
+			alertIcon: "glyphicon-close", 
+			click: function() {
+				$(this).xrxalert("close");	
+				},
+			text: "I Decline",
+        }, 
+        {
+			alertIcon: "glyphicon-checkmark",
+			click: function() {
+				$(this).xrxalert("close");
+				xrxSetLocalStorageData(EULA_KEY, "Yes");
+			},
+			text: "I Accept",
+		}]
+	});
+	
+	//document.documentElement.style.overflow = 'hidden';
+	
+	$("#loading-alert").xrxalert("close");
+}
+
+/*********************************** Exercise Specific Functions ****************************************/
+		
+			function pullPrint()
+			{
+				xrxPrintInitiatePrintJobURL( "http://127.0.0.1", PULL_PRINT_URL, LOGIN_NAME, LOGIN_PASSWORD,
+												generatePrintJobTicket(), printCallbackSuccess, callbackFailure );				
+			}
+			
+			function generatePrintJobTicket()
+			{
+				var printJobTicket = 
+				"<PrintJobTicket xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.xerox.com/enterprise/eipjobmodel/1\">"
+				  + "<JobDescription>"
+					+ "<JobName>PullPrintJob</JobName>"
+				  + "</JobDescription>"
+				  + "<JobProcessing>"
+					+ "<Output>"
+					  + "<ColorEffectsType>Auto</ColorEffectsType>"
+					  + "<Copies>1</Copies>"
+					  + "<Sides>OneSided</Sides>"
+					  + "<InputTraysCol>"
+							+ "<InputTrayName>Automatic</InputTrayName>"
+					  + "</InputTraysCol>"
+					+ "</Output>"
+				  + "</JobProcessing>"
+				+ "</PrintJobTicket>";
+				
+				return xrxEscape( printJobTicket );
+			}
+		
+			function printCallbackSuccess( request, response ) 
+			{
+				var jobId = xrxPrintParseInitiatePrintJobURL( response );
+				dispMessage("PrintJob " + jobId + " Initiated Successfully");
+			}
+					
+/**************************************  Command functions  *********************************************/
+	
+		function displayEula()
+		{
+			var hasUserAcceptedEula = xrxGetLocalStorageData(EULA_KEY, "No");
+			if( hasUserAcceptedEula === "No" )
+			{
+				 $("#eula-alert").xrxalert("open");
+			}
+		}
+			
+		function eulaResponse( userAccepted )
+		{
+			xrxSetLocalStorageData(EULA_KEY, userAccepted);
+		}
+		
+		function submitTicketScanJob()
+		{
+		
+		
+			switch($("#scanDestinationVal").html()) {
+				case "FTP":
+					xrxScanV2InitiateScanJob( "http://127.0.0.1", generateScanJobTicketDocument(true),
+											scanCallbackSuccess, callbackFailure);
+					break;
+				case "HTTP":
+					xrxScanV2InitiateScanJob( "http://127.0.0.1", generateScanJobTicketDocument(false),
+											scanCallbackSuccess, callbackFailure);
+					break;
+				case "SMTP":
+					xrxScanV2InitiateScanJob( "http://127.0.0.1", generateEmailJobTicketDocument(),
+											scanCallbackSuccess, callbackFailure);
+					break;				
+				default:
+					dispMessage("Scan Destination Invalid");
+			}
+		}
+		
+		function requestJobStatus( jobId )
+		{
+			var typeOfJob = "WorkflowScanning";
+			if( $("#scanDestinationVal").html() === 'SMTP' )
+			{
+				typeOfJob = "Email"
+			}
+			xrxJobMgmtGetJobDetails( "http://127.0.0.1", typeOfJob, jobId,
+									 jobCallbackSuccess, callbackFailure );
+		}
+		
+		function generateEmailJobTicketDocument()
+		{
+			var jobTicketXML = 
+			"<?xml version=\"1.0\"?>"
+			+ "<ScanJobTicket xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.xerox.com/enterprise/eipjobmodel/1\">"
+				+ "<JobProcessing>"
+					+ "<Input>"
+						+ "<ColorMode>" + convert_value($("#outputColorVal").html()).replace(/_/g, "") + "</ColorMode>"
+						+ "<Sides>" + convert_value($("#twoSidedScanningVal").html()).replace(/_/g, "") + "</Sides>"
+						+ "<OriginalType>"
+							+ "<OriginalSubType>PrintedOrig</OriginalSubType>"
+							+ "<DocumentImageMode>Photo</DocumentImageMode>"
+						+ "</OriginalType>"
+						+ "<ImageOptions>"
+							+ "<Resolution>300x300</Resolution>"
+						+ "</ImageOptions>"
+						+ "<LayoutAdjustment>"
+							+ "<InputOrientation>" + $("#originalOrientationVal").html() + "</InputOrientation>"
+							+ "<InputMediaSize>"
+								+ "<MediaSizeType>Auto</MediaSizeType>"
+							+ "</InputMediaSize>"
+						+ "</LayoutAdjustment>"
+					+ "</Input>"
+					+ "<Output>"
+						+ "<Destination>"
+							+ "<DestinationType>SMTP</DestinationType>"
+							+ "<ManualValue>"
+								+ "<DocumentFormat>" + convert_value($("#documentTypeVal").html()).replace(/_/g, "") + "</DocumentFormat>"
+								+ "<EmailOptions>"
+									+ "<Recipients>"
+										+ "<To>" + YOUR_EMAIL +"</To>"
+									+ "</Recipients>"
+									+ "<From>myApp@dne.com</From>"
+									+ "<SubjectLine>Example Scan To Email</SubjectLine>"
+									+ "<MessageBody>Someone Scanned something to you</MessageBody>"
+									+ "<AttachmentName>" + DOCUMENT_NAME + "</AttachmentName>"
+								+ "</EmailOptions>"	
+							+ "</ManualValue>"
+						+ "</Destination>"
+					+ "</Output>"
+				+ "</JobProcessing>"
+			+ "</ScanJobTicket>";
+		
+			return "<ScanJobTicketXmlDocument>" + xrxEscape(jobTicketXML) + "</ScanJobTicketXmlDocument>";
+		}
+		
+		function deviceInfoCallbackSuccess( envelope, response )
+		{
+			var data = xrxDeviceConfigParseGetDeviceInfo(response);
+			var deviceData = xrxGetTheFirstElement(data, "device");
+			var versionData = xrxGetTheFirstElement(data, "version");
+						
+			var deviceModel = xrxGetElementValue(deviceData, "model");	
+			var softwareVersion = xrxGetElementValue(versionData, "systemSoftware")
+			
+			$("#message-content").text("Using the " + deviceModel + " device with software version " + softwareVersion, false);
+			
+			xrxDeviceConfigGetDeviceCapabilities( "http://127.0.0.1", deviceCapSuccess, callbackFailure);
+		}
+		
+		function deviceCapSuccess( envelope, response )
+		{
+			var data = xrxDeviceConfigParseGetDeviceCapabilities(response);
+			var supportedColorModes = xrxGetTheFirstElement(data, "ScannerColorModeSupported");
+						
+			var result = "This machine supports the following color modes:\n";
+			clean(supportedColorModes);
+			var colorModesLength = supportedColorModes.childNodes.length;
+			for (var i = 0; i < colorModesLength-1; i++)
+			{
+				result += xrxGetValue(supportedColorModes.childNodes[i]) + ", ";	
+			}
+			
+			result += "and " + xrxGetValue(supportedColorModes.childNodes[i]);
+			
+			// Some devices do not support auto, so check the supportedColorModes for auto,
+			// and if it does not exist, disable auto
+			if(result.toLowerCase().indexOf("auto") === -1)
+			{
+				$("#outputColorMenu option:selected").attr('disabled','disabled').siblings().first().prop('selected', true);
+			}	
+
+			loadAllWidgets();
+			
+			dispMessage(result, true);
+			
+			displayEula();
+		}
+		
+		function submitScanWithTemplate()
+		{
+			xrxScanV2InitiateScanJobWithTemplate( "http://127.0.0.1", TEMPLATE_NAME, false, "token", scanTempCallbackSuccess, callbackFailure );
+		}
+		
+		function scanTempCallbackSuccess( request, response )
+		{
+			var jobId = xrxScanV2ParseInitiateScanJobWithTemplate( response );
+			dispMessage( "Scan Job Submitted", false);
+			requestJobStatus(jobId);
+		}
+		
+		function scanCallbackSuccess( request, response ) 
+		{
+			var jobId = xrxScanV2ParseInitiateScanJob( response );
+			dispMessage( "Scan Job Submitted", false);
+			requestJobStatus(jobId);
+		}
+
+		function jobCallbackSuccess( envelope, response )
+		{
+			var info = xrxJobMgmtParseGetJobDetails( response );
+			var jobId = xrxGetElementValue( info, 'JobId' );
+			var jobState =  xrxGetElementValue( info, 'JobState' );
+			if( (jobState === 'Completed') || (jobState === 'Canceled') || (jobState === 'Aborted') )
+			{
+				dispMessage( "Job " + jobId + " " + jobState + "!");				
+			}
+			else
+			{
+				setTimeout( function(){ requestJobStatus( jobId ); }, 2000 );
+			}
+		}
+
+		function generateScanJobTicketDocument(isFtp)
+		{
+			var jobTicketXML = 
+			"<?xml version=\"1.0\"?>"
+			+ "<ScanJobTicket xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.xerox.com/enterprise/eipjobmodel/1\">"
+				+ "<JobProcessing>"
+					+ "<Input>"
+						+ "<ColorMode>" + convert_value($("#outputColorVal").html()).replace(/_/g, "") + "</ColorMode>"
+						+ "<Sides>" + convert_value($("#twoSidedScanningVal").html()).replace(/_/g, "") + "</Sides>"
+						+ "<OriginalType>"
+							+ "<OriginalSubType>PrintedOrig</OriginalSubType>"
+							+ "<DocumentImageMode>Photo</DocumentImageMode>"
+						+ "</OriginalType>"
+						+ "<ImageOptions>"
+							+ "<Resolution>300x300</Resolution>"
+						+ "</ImageOptions>"
+						+ "<LayoutAdjustment>"
+							+ "<InputOrientation>" + convert_value($("#originalOrientationVal").html()) + "</InputOrientation>"
+						+ "</LayoutAdjustment>"
+					+ "</Input>"
+					+ "<Output>"
+						+ "<Destination>"
+							+ "<DestinationType>" + convert_value($("#scanDestinationVal").html()) + "</DestinationType>"
+							+ "<ManualValue>"
+								+ "<FriendlyName>ScanTo" + $("#scanDestinationVal").html() + "</FriendlyName>"
+								+ "<DocumentName>" + DOCUMENT_NAME + "</DocumentName>"
+								+ "<LoginSource>"
+									+ "<LoginSourceType>StoreInTicket</LoginSourceType>"
+									+ "<AuthenticatedUser>"
+										+ "<UserName>"+ LOGIN_NAME + "</UserName>"
+										+ "<Password>"+ LOGIN_PASSWORD + "</Password>"
+									+ "</AuthenticatedUser>"
+								+ "</LoginSource>"
+								+ "<FilingPolicy>DateTime</FilingPolicy>"
+								+ "<Host>" + SCAN_SERVER + "</Host>"
+								+ "<Path>" + (isFtp ? SCAN_DESTINATION : HTTP_SCAN_PATH) + "</Path>"
+								+ (isFtp ? "" : "<ScriptPath>" + HTTP_SCRIPT_PATH +"</ScriptPath>") 
+								+ "<DocumentFormat>" + convert_value($("#documentTypeVal").html()).replace(/_/g, "") + "</DocumentFormat>"
+							+ "</ManualValue>"
+						+ "</Destination>"
+					+ "</Output>"
+				+ "</JobProcessing>"
+			+ "</ScanJobTicket>";
+			return "<ScanJobTicketXmlDocument>" + xrxEscape(jobTicketXML) + "</ScanJobTicketXmlDocument>";
+		}
+		
+		function deleteTemplate()
+		{
+			xrxTemplateDeleteTemplate( "http://127.0.0.1", TEMPLATE_NAME, templateChecksum, 
+										deleteCallbackSuccess, callbackFailure);
+		}
+		
+		function putCallbackSuccess( envelope, response )
+		{
+			templateChecksum = xrxTemplateParsePutTemplate(response);
+			xrxSetLocalStorageData("templateChecksum", templateChecksum);
+			dispMessage("Template " + templateChecksum + " Put Successfully");
+		}
+
+		function deleteCallbackSuccess( envelope, response )
+		{
+			dispMessage("Template " + templateChecksum + " Deleted Successfully");
+		}
+
+		function callbackFailure( request, response, status )
+		{
+			dispMessage("Request: " + getRequestName(request) + " \nFailed: " + getFailedReason(response) + "\n\n\n" + request);
+		}
+			
+		/**
+		* This makes the template string with the user selected options
+		*
+		* @return string	template string
+		*/
+		function generateTemplate()
+		{	
+			var filling = "[service xrx_svc_file]\n";
+			switch($("#scanDestinationVal").html()) {
+				case "HTTP":
+					filling += "{\n"
+						+ "* enum_filingpolicy DocumentFilingPolicy = GEN_DATE_TIME_ID;\n"
+						+ "* enum_filingprotocol FilingProtocol = XRXHTTP;\n"
+						+ "* string RepositoryAlias = \"\";\n"
+						+ "* string RepositoryName = \"" + SCAN_SERVER + "\";\n"
+						+ "* string DocumentPath = \""+ HTTP_SCAN_PATH + "\";\n"
+						+ "* string UserNetworkFilingLoginName = \"" + LOGIN_NAME + "\";\n"
+						+ "* string UserNetworkFilingLoginID = \"" + LOGIN_PASSWORD + "\";\n"
+						+ "* string XrxHTTPScriptLocation = \"" + HTTP_SCRIPT_PATH + "\";\n"
+						+ "* boolean ServerValidationReq = FALSE;\n"
+						+ "* boolean DocumentDirectoryXSM = TRUE;\n"
+						+ "}\n"
+					break;
+				default:
+					filling += "{\n"
+						+ "* enum_filingpolicy DocumentFilingPolicy = GEN_DATE_TIME_ID;\n"
+						+ "* enum_filingprotocol FilingProtocol = FTP;\n"
+						+ "* string RepositoryAlias = \"\";\n"
+						+ "* string DocumentPath = \"" + SCAN_DESTINATION + "\";\n"
+						+ "* string RepositoryName = \"" + SCAN_SERVER + "\";\n"
+						+ "* string UserNetworkFilingLoginName = \"" + LOGIN_NAME + "\";\n"
+						+ "* string UserNetworkFilingLoginID = \"" + LOGIN_PASSWORD + "\";\n"
+						+ "}\n"
+					break;	
+			}
+			
+			var template = 
+				"[service xrx_svc_general]\n"
+				+ "{\n"
+				+ "* enum_DCS DCSDefinitionUsed = DCS_GENERIC;\n"
+				+ "* enum_encoding JobTemplateCharacterEncoding = UTF-8;\n"
+				+ "* enum_confmethod ConfirmationMethod = PRINT;\n"
+				+ "* enum_confstage ConfirmationStage = AFTER_JOB_COMPLETE;\n"
+				+ "* string JobTemplateLanguageVersion = \"4.2.00\";\n"
+				+ "* string JobTemplateDescription = \"Scan Job made by myapp\";\n"
+				+ "* string JobTemplateName = \"" + TEMPLATE_NAME + "\";\n"
+				+ "* string JobTemplateCreator = \"\";\n"
+				+ "* boolean SuppressJobLog = FALSE;\n"
+				+ "}\n"
+				+ "end\n"
+				+ "\n"
+				+ "[service xrx_svc_scan]\n"
+				+ "{\n"
+				+ "* enum_mediasize InputMediaSize = AUTO;\n"
+				+ "* enum_orientation InputOrientation = " + $("#originalOrientationVal").html() + ";\n"  //+ convert_value( document.getElementById( 'OrientationSelections' ).value ) + ";\n"
+				+ "* enum_sided SidesToScan = " + convert_value($("#twoSidedScanningVal").html()) + ";\n" //+ convert_value( document.getElementById( 'PageSidesSelections' ).value ) + ";\n"
+				+ "* enum_colormode ColorMode = " + $("#outputColorVal").html() + ";\n"  //+ convert_value( document.getElementById( 'ColorOptionsSelections' ).value ) + ";\n"
+				+ "* enum_imagemode DocumentImageMode = TEXT;\n"
+				+ "* integer CompressionQuality = 127;\n"
+				+ "* integer Sharpness = 0;\n"
+				+ "}\n"
+				+ "end\n"
+				+ "\n"
+				+ "[doc_object xrx_document]\n"
+				+ "doc_1{\n"
+				+ "* enum_resolution Resolution = RES_300X300;\n"
+				+ "* enum_docformat DocumentFormat = " + convert_value($("#documentTypeVal").html()) + ";\n"  //+ convert_value( document.getElementById( 'DocumentTypeSelections' ).value ) + ";\n"
+				+ "* string DocumentObjectName = \"" + DOCUMENT_NAME + "\";\n"
+				+ "}\n"
+				+ "end\n"
+				+ "\n"
+				+ filling
+				+ "end\n";
+				
+			return template;
+		}
+		
+		/**
+		* This converts the given displayed value into the correct device value. 
+		*
+		* @param value		displayed value
+		@ return string		device value
+		*/
+		function convert_value( value )
+		{
+			switch( value )
+			{
+				// Document Format
+				case "PDF": return "PDF";
+				case "TIFF": return "TIFF_V6";
+				// Original Orientation. For the products that don't support Original Oriencation, 
+				// the MFD uses "Portrait" as the default value
+				case "PORTRAIT": return "Portrait";
+				case "LANDSCAPE": return "Landscape";
+				// Plex
+				case "ONE_SIDED": return "One_Sided";
+				case "TWO_SIDED": return "Two_Sided";
+				case "2nd Side Rotation": return "Second_Side_Rotation";
+				// Color
+				case "AUTO": return "Auto";
+				case "FULL_COLOR": return "Full_Color";
+				case "GRAYSCALE": return "Grayscale";
+				case "BLACK_AND_WHITE": return "Black_And_White";
+				//Type
+				case "HTTP": return "Http";
+				case "FTP": return "Ftp";
+				default: return value;
+			}
+		}
+
+		/**
+		* This converts the given displayed value into the correct device value (used for xml tickets). 
+		*
+		* @param value		displayed value
+		@ return string		device value
+		*/
+		function convert_value_ticket( value )
+		{
+			switch( value )
+			{
+				// Document Format
+				case "PDF": return "PDF";
+				case "TIFF": return "TIFFV6";
+				// Original Orientation. For the products that don't support Original Oriencation, 
+				// the MFD uses "Portrait" as the default value
+				case "Portrait": return "PORTRAIT";
+				case "Landscape": return "LANDSCAPE";
+				// Plex
+				case "One Sided": return "ONESIDED";
+				case "Two Sided": return "TWOSIDED";
+				case "Second Side Rotation": return "SECONDSIDEROTATION";
+				// Color
+				case "Color": return "FULLCOLOR";
+				case "Grayscale": return "GRAYSCALE";
+				case "Black and White": return "BLACKANDWHITE";
+				default: return value;
+			}
+		}
+		
+		/**
+		* This starts the scan process, by creating the scan template, and sending it to the device
+		*/
+		function putTemplate()
+		{
+		    var templateString = generateTemplate();
+			xrxTemplatePutTemplate( "http://127.0.0.1", TEMPLATE_NAME, templateString,
+									putCallbackSuccess, callbackFailure );
+									
+		}
+		
+		function scanClick()
+		{
+			
+			switch($("#scanWorkflowVal").html()) {
+				case "PutTemplate":
+					putTemplate();
+					break;
+				case "DeleteTemplate":
+					deleteTemplate();
+					break;
+				case "ScanWithTemplate":
+					submitScanWithTemplate();
+					break;
+				case "ScanWithTicket":
+					submitTicketScanJob();
+					break;					
+				default:
+					dispMessage("No Scanning Performed");
+					
+					if($("#printScan").xrxtoggleswitch("value") === 1)
+					{
+						dispMessage("Print Started", true);
+						pullPrint();
+					}else{
+					localStorage.clear();
+					}
+			}
+		
+		}
+		
+		//Used for popup messages
+		function dispMessage(msg, append)
+		{
+			var appendText = $("#message-content").text();
+			var messagePopupHtml = '<div id="message-popup"><div class="row"></div><div class="row" style=""><div id="message-content" style="white-space: pre-wrap;"></div></div><div class="row" style="height:120px"></div></div>';
+			$("#message-popup").remove();
+			$("body").append(messagePopupHtml);
+			$("#message-popup").xrxpopup();
+			$("#message-content").text(append ? appendText + '\n' +  msg : msg);
+			$("#message-popup").xrxpopup("open");
+		}
+		
+	</script>
+	
+<!-- *************************************  HTML  ********************************************* -->
+</head>
+<body>
+<div id="action_bar" class="xrx-action-bar xrx-background blue">
+	<div class="xrx-action-bar-label-line-one">EIP Example Partner Application</div>
+	<div id="version" class="xrx-action-bar-label-line-two"></div>
+	<button id="exit" class="xrx-action-bar-button-left"></button>
+	<button id="start" class="xrx-action-bar-button-right">Start</button>
+</div>
+<div id="demoContentContainer">
+<div id = 'demo'></div>
+<div>Select a button to go to the demo page:</div>
+
+<div class="row" style="height:490px">
+    <table id="featureTable">	
+		<tbody>
+			<tr id="scanWorkflow">
+				<td><span class="xrx-glyphicon glyphicon-scan" style="padding-left: 6px;"></span></td>
+				<td>Scan Work Flow</td>
+				<td id="scanWorkflowVal"></td>
+			</tr>
+			<tr id="scanDestination">
+				<td><span class="xrx-glyphicon glyphicon-network" style="padding-left: 6px;"></span></td>
+				<td>Scan Destination</td>
+				<td id="scanDestinationVal"></td>
+			</tr>
+			<tr id="documentType">
+				<td><img src="css/images/file_name_and_format_48.png" height="48" width="48"></td>
+				<td>Document Type</td>
+				<td id="documentTypeVal"></td>
+			</tr>
+			<tr id="originalOrientation">
+				<td><img src="css/images/orientation_48.png" height="48" width="48"></td>
+				<td>Original Orientation</td>
+				<td id="originalOrientationVal"></td>
+			</tr>
+			<tr id="twoSidedScanning">
+				<td><img src="css/images/2_sided_48.png" height="48" width="48"></td>
+				<td>2-Sided Scanning</td>
+				<td id="twoSidedScanningVal"></td>
+			</tr>
+			<tr id="outputColor">
+				<td><img src="css/images/output_color_48.png" height="48" width="48"></td>
+				<td>Output Color</td>
+				<td id="outputColorVal"></td>
+			</tr>
+			<tr id="scanPrint">
+				<td><img src="css/images/print_48.png" height="48" width="48"></td>
+				<td>Print A Document</td>
+				<td><div style="float:right" id="printScan"></div></td>
+			</tr>			
+		</tbody>
+    </table>
+</div>
+</div>
+
+<!-- Scan Type Segmented Control Popover -->
+<div id="scanWorkflow-popover">
+    <select name="scanWorkflowMenu" id="scanWorkflowMenu">
+        <option value="None" glyph-class="glyphicon-code" selected>None</option>
+        <option value="PutTemplate" glyph-class="glyphicon-install" >Put Template</option>
+        <option value="DeleteTemplate" glyph-class="glyphicon-delete-all" >Delete Template</option>
+        <option value="ScanWithTemplate" glyph-class="glyphicon-scan" >Scan Using Template</option>
+        <option value="ScanWithTicket" glyph-class="glyphicon-scan" >Scan Using Ticket</option>
+    </select>
+</div>
+
+<div id="scanDestination-popover">
+    <select name="scanDestinationMenu" id="scanDestinationMenu">
+        <option value="FTP" glyph-class="glyphicon-transfer" selected>Ftp</option>
+        <option value="HTTP" glyph-class="glyphicon-cloud" >Http</option>
+        <option value="SMTP" glyph-class="glyphicon-envelope" >Email</option>
+    </select>
+</div>
+
+<!-- Document Type Segmented Control Popover -->
+<div id="documentType-popover">
+    <select name="documentTypeMenu" id="documentTypeMenu">
+        <option value="PDF" icon-class="filetype_pdf" selected>PDF</option>
+        <option value="TIFF_V6" icon-class="filetype_tiff">TIFF</option>
+    </select>
+</div>
+
+<!-- Color Segmented Control Popover -->
+<div id="outputColor-popover">
+    <select name="outputColorMenu" id="outputColorMenu">
+        <option value="AUTO" icon-class="output_color_auto" selected >Auto</option>
+        <option value="FULL_COLOR" icon-class="output_color_color">Color</option>
+        <option value="GRAYSCALE" icon-class="output_color_gray">Grayscale</option>
+        <option value="BLACK_AND_WHITE" icon-class="output_color_bw">Black and White</option>
+    </select>
+</div>
+
+<!-- Sides Segmented Control Popover -->
+<div id="twoSidedScanning-popover">
+    <select name="twoSidedScanningMenu" id="twoSidedScanningMenu">
+        <option value="ONE_SIDED" icon-class="one_sided" selected>One Sided</option>
+        <option value="TWO_SIDED" icon-class="two_sided">Two Sided</option>
+        <option value="2nd Side Rotation" icon-class="two_sided_rotate">2nd Side Rotation</option>
+    </select>
+</div>
+
+<!-- Orientation Segmented Control Popover -->
+<div id="originalOrientation-popover">
+    <select name="originalOrientationMenu" id="originalOrientationMenu">
+        <option value="PORTRAIT" icon-class="orientation_portrait" selected>Portrait</option>
+        <option value="LANDSCAPE" icon-class="orientation_landscape">Landscape</option>
+    </select>
+</div>
+
+<!-- Message Popup-->
+<div id="message-popup">
+	<div class="row"></div>
+	<div class="row" style="">
+		<div id="message-content" style="white-space: pre-wrap;"></div>
+	</div>
+	<div class="row" style="height:120px"></div>
+</div>
+</body>
+
+<!-- EULA Alert-->
+<div id="eula-alert" title="Do you accept these Terms and Conditions?">
+    <p>Lorem ipsum.</p>
+    <p>Magna.</p>
+    <p>Sagittis justo nunc lobortis.</p>
+    <p>Primis.</p>
+    <p>Aliquet pharetra.</p>
+    <p>Facilisis ultrices.</p>
+    <p>Donec.</p>
+    <p>Lacinia etiam sapien.</p>
+    <p>Suspendisse augue ad curabitur.</p>
+    <p>Lorem ipsum.</p>
+    <p>Magna.</p>
+    <p>Sagittis justo nunc lobortis.</p>
+    <p>Primis.</p>
+    <p>Aliquet pharetra.</p>
+    <p>Facilisis ultrices.</p>
+    <p>Donec.</p>
+    <p>Lacinia etiam sapien.</p>
+    <p>Suspendisse augue ad curabitur.</p>
+    <p>Tempor sapien aliquet.</p>
+    <p>Litora.</p>
+    <p>Dictum rutrum morbi.</p>
+    <p>Lorem.</p>
+    <p>Quis.</p>
+    <p>Vivamus donec.</p>
+    <p>Feugiat.</p>
+    <p>Duis.</p>
+    <p>Scelerisque malesuada.</p>
+    <p>Urna fermentum orci.</p>
+    <p>Massa.</p>
+    <p>Tempor sapien aliquet.</p>
+    <p>Litora.</p>
+    <p>Dictum rutrum morbi.</p>
+    <p>Lorem.</p>
+    <p>Quis.</p>
+    <p>Vivamus donec.</p>
+    <p>Feugiat.</p>
+    <p>Duis.</p>
+    <p>Scelerisque malesuada.</p>
+    <p>Urna fermentum orci.</p>
+    <p>Massa.</p>
+</div>
+
+<!-- Loading Alert-->
+<div id="loading-alert" style="overflow:visible" >
+	<div id="loading" style="margin-left:auto;margin-right:auto;"></div>
+</div>
+</body>
+</html>

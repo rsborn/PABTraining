@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Registration Version="1.0" ClientVersion="3.0.04" Client="EIP Registration Client" Date="10/1/2015">
+	<Name xmlns="http://www.xerox.com/webservices/office/cuiregistration/1">my9thGenApp</Name>
+	<Description xmlns="http://www.xerox.com/webservices/office/cuiregistration/1">No Description Provided</Description>
+	<VendorName xmlns="http://www.xerox.com/webservices/office/cuiregistration/1">Partner Vendor</VendorName>
+	<SmallIconUrl xmlns="http://www.xerox.com/webservices/office/cuiregistration/1">http://YOUR_SERVER_NAME/my9thGenApp/my9thGenApp.png</SmallIconUrl>
+	<ToolsIconUrl xmlns="http://www.xerox.com/webservices/office/cuiregistration/1">http://YOUR_SERVER_NAME/my9thGenApp/tools.png</ToolsIconUrl>
+	<Url xmlns="http://www.xerox.com/webservices/office/cuiregistration/1">http://YOUR_SERVER_NAME/my9thGenApp/my9thGenApp.html</Url>
+	<DescriptionUrl xmlns="http://www.xerox.com/webservices/office/cuiregistration/1">http://YOUR_SERVER_NAME/my9thGenApp/description.xml</DescriptionUrl>
+	<BrowserType>secondGenEIPBrowser</BrowserType>
+</Registration>

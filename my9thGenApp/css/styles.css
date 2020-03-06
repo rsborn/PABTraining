@@ -1,0 +1,110 @@
+div.titlepane
+{
+	font-family:arial;
+	font-size:18px;
+	color:White;
+	position:absolute;
+	top:-10px;
+	left:5px;
+	height:20px;
+	width:790px;
+	z-index:50;
+}
+
+div.fullpane
+{
+	font-family:arial;
+	font-size:10pt;
+	position:absolute;
+	top:25px;
+	left:0px;
+	width:800px;
+	height:320px;
+	z-index:40;
+}
+
+div.NextButton
+{
+	position:absolute;
+	font-size:18px;
+	left:570px;
+	top:3px;
+}
+
+div.ExitButton
+{
+	position:absolute;
+	font-size:18px;
+	left:665px;
+	top:3px;
+}
+
+div.DocumentTypeLabel
+{
+	position:absolute;
+	left:10px;
+	top:10px;
+}
+
+div.DocumentTypeSelections
+{
+	position:absolute;
+	left:10px;
+	top:40px;
+}
+
+div.PageSidesLabel
+{
+	position:absolute;
+	left:290px;
+	top:10px;
+}
+
+div.PageSidesSelections
+{
+	position:absolute;
+	left:290px;
+	top:40px;
+}
+
+div.ColorOptionsLabel
+{
+	position:absolute;
+	left:580px;
+	top:10px;
+}
+
+div.ColorOptionsSelections
+{
+	position:absolute;
+	left:580px;
+	top:40px;
+}
+
+div.OrientationLabel
+{
+	position:absolute;
+	left:290px;
+	top:170px;
+}
+
+div.OrientationSelections
+{
+	position:absolute;
+	left:290px;
+	top:200px;
+}
+
+div.DeliveryLabel
+{
+	position:absolute;
+	left:580px;
+	top:170px;
+}
+
+div.DeliverySelections
+{
+	position:absolute;
+	left:580px;
+	top:200px;
+}
