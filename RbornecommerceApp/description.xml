@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<displayText xmlns="http://www.xerox.com/webservices/office/dsp/xeip" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <label>E-Commerce Usage-based Demo App</label>
+  <description>E-Commerce Usage-based Demo App</description>
+  <vendor>Xerox Corporation</vendor>
+  <supportlink>http://www.support.xerox.com/support/xerox-app-gallery/support/</supportlink>
+  <version>1.2</version>
+  <browserType>secondGenEIPBrowser</browserType>
+  <AllowSoftKeypad>false</AllowSoftKeypad>
+</displayText>
+

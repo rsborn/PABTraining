@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<appCustomization xmlns="http://www.xerox.com/appstudio/ckapp/customization" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="customization.xsd" >
+	<minEIP>
+		<majorVersion>3</majorVersion>
+		<minorVersion>5</minorVersion>
+		<revision>0</revision>
+	</minEIP>
+    
+	<appCategory>Business</appCategory> 
+	
+	<privacyPolicies>
+		<privacyFile lang="en">privacy-english.txt</privacyFile>
+		<privacyFile lang="fr">privacy-french.txt</privacyFile>
+	</privacyPolicies>
+	
+	<customSoftwareDisclosure>
+		<swdFile lang="en">SoftwareDisclosures\swd-english.txt</swdFile>
+		<swdFile lang="fr">SoftwareDisclosures\swd-french.txt</swdFile>
+	</customSoftwareDisclosure>
+	
+	<customEULA>
+		<eulaFile lang="en">eula-english.txt</eulaFile>
+		<eulaFile lang="fr">eula-french.txt</eulaFile>
+	</customEULA>
+ 
+	<screenshots>
+		<imageFile lang="en">screenshot-english-1.png</imageFile>
+		<imageFile lang="fr">screenshot-french-1.png</imageFile>
+	</screenshots>
+	
+	<appStringSets>
+		<appStringSet lang="en">
+			<whatsNew>Critical Bug Fixes</whatsNew>
+			<galleryDescription>
+				This is a more detailed description that will displayed in the Xerox&#174; App Gallery.  This description is only displayed on the "Learn More" page for the custom application.  There is no maximum character limit for this description.  The display of this text is completely controlled by Xerox&#174; App Studio.
+			</galleryDescription>
+			<copyright>&#169; 2013-2014 Xerox Corporation. All Rights Reserved.</copyright>
+			<languages>English,French</languages>
+			<supportLink href="http://www.support.xerox.com/support/xerox-app-studio">Xerox Product Support</supportLink>
+			<documentationLink href="http://www.support.xerox.com/support/xerox-app-studio/file-redirect/enus.html?fileLanguage=en%26contentId=126647">Xerox&#174; App Studio QuickStart Guide</documentationLink>
+			<demonstrationLink href="https://www.youtube.com/user/XeroxCorp"/>
+			<forumLink href="http://forum.support.xerox.com"></forumLink>
+			<privacyLink href="https://www.xerox.com/en-us/about/privacy-policy"></privacyLink>
+		</appStringSet>
+		<appStringSet lang="fr">
+			<whatsNew>Correction de bugs critiques</whatsNew>
+			<galleryDescription>
+				Il s'agit d'une description plus d&#233;taill&#233;e qui sera affich&#233; dans la Xerox&#174; App Gallery. Cette description est affich&#233;e uniquement sur la page "En savoir plus " pour l'application personnalis&#233;e . Il n'y a pas de limite maximale de caract&#232;res pour cette description. L'affichage de ce texte est enti&#232;rement contr&#244;l&#233; par Xerox&#174; App Studio.
+			</galleryDescription>
+			<copyright>&#169; 2013-2014 Xerox Corporation. Tous droits r&#233;serv&#233;s.</copyright>
+			<languages>Anglais,Fran&#231;ais</languages>
+			<supportLink href="http://www.support.xerox.com/support/xerox-app-studio/support/frfr.html">Support produit Xerox</supportLink>
+			<documentationLink href="http://www.support.xerox.com/support/xerox-app-studio/file-redirect/frfr.html?fileLanguage=fr%26contentId=128990">Guide de d&#233;marrage rapide Pr&#233;sentation de Xerox&#174; App Studio</documentationLink>	
+			<demonstrationLink href="https://www.youtube.com/user/XeroxCorp"/>
+			<forumLink href="http://forum.support.xerox.com"></forumLink>
+			<privacyLink href="https://www.xerox.com/en-us/about/privacy-policy"></privacyLink>
+		</appStringSet>  
+	</appStringSets>
+</appCustomization>

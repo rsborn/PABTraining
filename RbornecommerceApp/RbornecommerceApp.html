@@ -1,0 +1,91 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>E-Commerce Demo App</title>
+
+    <!--Include 9th Gen Widgets-->
+    <link rel="stylesheet" href="xrx_g9_widgets/XRXg9Widgets.min.css" type="text/css" />
+    <script src="xrx_g9_widgets/XRXg9Widgets.min.js"></script>
+
+    <!--Include Custom CSS-->
+    <link rel="stylesheet" href="styles/common.css">
+
+    <!--Include Custom Javascript-->
+    <script src="scripts/ecommerceApp.js"></script>
+
+</head>
+<body>
+    <!--The action bar is the blue bar at the top of the page, containing the buttons and page title-->
+    <div id="action_bar" class="xrx-action-bar xrx-background">
+        <div class="xrx-action-bar-label-line-one">E-Commerce</div>
+        <div class="xrx-action-bar-label-line-two">Demo App</div>
+        <button id="callIsEntitled" class="xrx-action-bar-button-left">IsEntitled()</button>
+        <button id="callTrackUsage" class="xrx-action-bar-button-right-two">TrackUsage()</button>
+        <button id="exit" class="xrx-action-bar-button-right"></button>
+    </div>
+    <div id="demoContentContainer">
+        <div class="demoContent">
+
+            <div class="usageContainer">
+                <!--This button opens the popover for selecting the unit name-->
+                <button id="btnUnits">Unit Name</button>
+                <!--This input opens a keypad for entering the number of units to consume-->
+                <input id="numUnits" type="text">
+            </div>
+
+            <!--This table contains the results from the isEntitled call-->
+            <table>
+                <tr>
+                    <td><label class="demoContent">The app is entitled to run:</label></td>
+                    <td><label id="entitled" class="demoContent">xxx</label></td>
+                </tr>
+                <tr>
+                    <td><label class="demoContent">Days remaining in license:</label></td>
+                    <td><label id="remainingDays" class="demoContent">xxx</label></td>
+                </tr>
+                <tr>
+                    <td><label id="unitRemaininLabel" class="demoContent">Number of units remaining:</label></td>
+                    <td><label id="remainingUnits" class="demoContent">xxx</label></td>
+                </tr>
+                <tr>
+                    <td><label id="unitUsedLabel" class="demoContent">Number of units used:</label></td>
+                    <td><label id="usedUnits" class="demoContent">xxx</label></td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+
+    <!--This banner is used to display information to the user-->
+    <div id="banner">
+        <div class="firstline">
+            <h2 id="httpStatus"></h2>
+        </div>
+        <div class="secondline">
+            <p id="bannerMessage"></p>
+        </div>
+    </div>
+
+    <!--This popover is used to display the values in the unit type-->
+    <div id="unit-popover">
+        <select name="unitSelect" id="unitSelect">
+            <option value="CopyJobs">Copy Jobs</option>
+            <option value="CopyPages">Copy Pages</option>
+            <option value="FaxJobs">Fax Jobs</option>
+            <option value="FaxPages">Fax Pages</option>
+            <option value="PrintJobs">Print Jobs</option>
+            <option value="PrintPages">Print Pages</option>
+            <option value="ScanJobs">Scan Jobs</option>
+            <option value="ScanPages">Scan Pages</option>
+            <option value="Custom">Custom</option>
+        </select>
+    </div>
+
+    <!--This popup is used to prompt the user to type in the custom unit name-->
+    <div id="popup">
+        <input id="keyboard" type="text" placeholder="keyboard">
+    </div>
+
+</body>
+</html>

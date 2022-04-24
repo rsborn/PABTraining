@@ -1,0 +1,108 @@
+
+.xrx-popup-action-bar {
+    position: absolute;
+    padding: 0px;
+    height: 78px;
+    box-shadow: 0px 10px 10px -5px rgba(29, 29, 29, .35);
+    z-index: 600;
+    width: 100%;
+}
+
+.xrx-action-bar-label-line-one{
+    position: absolute;
+    width: 100%;
+    top: 15%;
+    color: #fff;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 300;
+    text-shadow: #1d1d1d 0px -1px 0px;
+}
+.xrx-action-bar-label-line-two{
+    position: absolute;
+    width: 100%;
+    top: 55%;
+    color: #fff;
+    text-align: center;
+    font-weight: 300;
+    text-shadow: #1d1d1d 0px -1px 0px;
+}
+
+.xrx-action-bar-label {font-size: 28px;}
+
+.xrx-action-bar-button-left-two {
+  position: absolute;
+  left: 80px;
+}
+.xrx-action-bar-button-right-two {
+  position: absolute;
+  right: 80px;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    width: 800px;
+    height: 480px;
+}
+
+#demoContentContainer {
+    position: absolute;
+    top: 78px;
+    left: 0px;
+    height: 403px;
+    width: 800px;
+}
+
+.demoContent,
+#demoContent {
+    position: relative;
+    top: 5px;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 760px;
+}
+
+.usageContainer {
+    margin-top: 25px;
+    text-align: center;
+}
+
+#numUnits {
+    width: 260px;
+}
+
+table {
+    margin: 0 auto;
+}
+
+@media screen and (min-width: 801px), screen and (min-height: 481px) {
+    body {
+        margin: 0px;
+        padding: 0px;
+        width: 1024px;
+        height: 600px;
+    }
+
+    #demoContentContainer {
+        position: absolute;
+        top: 78px;
+        left: 0px;
+        height:523px;
+        width: 1024px;
+    }
+
+    .demoContent,
+    #demoContent {
+        position: relative;
+        top: 5px;
+        margin-left: 40px;
+        margin-right: 40px;
+        width: 944px;
+    }
+
+    #numUnits {
+        width: 230px;
+    }
+
+}
